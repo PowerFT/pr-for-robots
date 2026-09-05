@@ -460,7 +460,7 @@ export default function Home() {
           <h2 className={sectionHeading}>Meet Your Hosts</h2>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-[clamp(28px,4vw,56px)]">
             <div className="flex items-start gap-[22px]">
-              <div className="relative h-[132px] w-[132px] flex-none overflow-hidden rounded-card border border-hairline">
+              <div className="host-portrait h-[132px] w-[132px] flex-none">
                 <Image
                   src="/images/john-rose.jpeg"
                   alt="John Rose"
@@ -482,7 +482,7 @@ export default function Home() {
             </div>
 
             <div className="flex items-start gap-[22px]">
-              <div className="relative h-[132px] w-[132px] flex-none overflow-hidden rounded-card border border-hairline">
+              <div className="host-portrait h-[132px] w-[132px] flex-none">
                 <Image
                   src="/images/samson-ogbu.png"
                   alt="Samson Ogbu"
