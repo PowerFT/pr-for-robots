@@ -1,6 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+
+import { Wordmark } from "@/components/wordmark";
 
 const links = [
   { label: "Home", href: "#top" },
@@ -57,13 +60,14 @@ export function SiteNav() {
         aria-label="Main"
         className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-6 lg:px-12 3xl:max-w-[1440px]"
       >
-        <a
-          href="#top"
+        <Link
+          href="/"
           onClick={(event) => handleNavigate(event, "#top")}
-          className="text-[13px] font-bold uppercase tracking-[0.2em] text-white"
+          aria-label="PR for Robots — home"
+          className="inline-flex items-center"
         >
-          PR for Robots
-        </a>
+          <Wordmark size="nav" />
+        </Link>
 
         <ul className="hidden items-center gap-8 text-[13px] font-medium md:flex">
           {links.map((link) => (

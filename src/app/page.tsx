@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { RegisterForm } from "@/components/register-form";
 import { SiteNav } from "@/components/site-nav";
+import { Wordmark } from "@/components/wordmark";
 import { videos } from "@/data/videos";
 
 /* ------------------------------------------------------------------ */
@@ -42,21 +43,8 @@ export default function Home() {
               <span>Samson Ogbu</span>
             </div>
 
-            <h1 className="m-0 flex flex-wrap items-center gap-x-[0.24em] text-[40px] font-bold uppercase leading-[0.94] tracking-[-0.02em] md:text-[56px] lg:text-[64px]">
-              <span className="whitespace-nowrap">PR FOR</span>
-              <span className="inline-flex items-center whitespace-nowrap">
-                <span>R</span>
-                {/* Robot head standing in for the second O */}
-                <span className="relative mx-[0.04em] inline-flex h-[0.72em] w-[0.72em] items-end justify-center">
-                  <span className="absolute -top-[0.16em] left-1/2 h-[0.16em] w-0.5 bg-brand-orange" />
-                  <span className="absolute -top-[0.22em] left-1/2 h-[0.12em] w-[0.12em] -translate-x-1/2 rounded-full bg-brand-orange" />
-                  <span className="flex h-[0.6em] w-full items-center justify-center gap-[0.11em] rounded-[0.14em] border-[0.075em] border-brand-orange">
-                    <span className="h-[0.1em] w-[0.1em] rounded-full bg-brand-orange" />
-                    <span className="h-[0.1em] w-[0.1em] rounded-full bg-brand-orange" />
-                  </span>
-                </span>
-                <span>BOTS</span>
-              </span>
+            <h1 className="m-0">
+              <Wordmark size="hero" />
             </h1>
 
             <p className="m-0 text-[19px] font-medium leading-[1.35] text-white text-pretty md:text-[23px]">
