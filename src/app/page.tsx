@@ -246,7 +246,7 @@ export default function Home() {
             <div className="flex items-start gap-5">
               <div className="host-portrait h-[132px] w-[132px] flex-none">
                 <Image
-                  src="/images/samson-ogbu.png"
+                  src="/images/samson-ogbu.jpg"
                   alt="Samson Ogbu"
                   fill
                   sizes="132px"
