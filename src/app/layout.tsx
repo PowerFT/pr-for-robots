@@ -13,7 +13,7 @@ const description =
   "If AI can't find, understand or trust your brand, you may be invisible to your next customer. A webinar series from Rose Creative Marketing and Fitch Technologies.";
 
 const ogImage = {
-  url: "/images/hero.png",
+  url: "/images/hero.jpg",
   width: 1084,
   height: 992,
   alt: "A humanoid robot seen from behind, facing a wall of dashboards reporting AI search insights, brand mentions and AI visibility scores",

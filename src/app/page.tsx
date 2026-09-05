@@ -73,7 +73,7 @@ export default function Home() {
             />
             <div className="relative overflow-hidden rounded-card border border-hairline">
               <Image
-                src="/images/hero.png"
+                src="/images/hero.jpg"
                 alt={heroAlt}
                 width={1084}
                 height={992}
