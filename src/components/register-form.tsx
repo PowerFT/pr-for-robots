@@ -47,7 +47,7 @@ export function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-3.5 bg-card-2 border border-hairline rounded-card p-[clamp(20px,2.4vw,32px)]"
+      className="flex flex-col gap-3.5"
     >
       <div className={fieldWrap}>
         <svg width="17" height="17" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>

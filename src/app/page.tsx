@@ -1,244 +1,39 @@
 import Image from "next/image";
 
 import { RegisterForm } from "@/components/register-form";
+import { SiteNav } from "@/components/site-nav";
 import { videos } from "@/data/videos";
 
 /* ------------------------------------------------------------------ */
 /* Shared bits                                                         */
 /* ------------------------------------------------------------------ */
 
+/** One full-width section card: #0C0C0C, 1px hairline, 8px radius, 40px inset. */
 const sectionCard =
-  "bg-card border border-hairline rounded-card p-[clamp(24px,3vw,48px)]";
+  "scroll-mt-16 bg-card border border-hairline rounded-card p-6 md:p-10";
 const sectionHeading =
-  "m-0 text-[clamp(24px,2.6vw,32px)] font-semibold tracking-[-0.01em] text-brand-teal";
+  "m-0 text-[26px] md:text-[32px] font-semibold tracking-[-0.01em] text-brand-teal";
 const bodyCopy = "m-0 text-base leading-[1.75] text-body text-pretty";
-const cardLabel =
-  "font-mono text-[9.5px] tracking-[0.14em] uppercase text-brand-teal";
 
-/* ------------------------------------------------------------------ */
-/* Hero dashboard cards                                                */
-/* ------------------------------------------------------------------ */
-
-const statCard =
-  "bg-card-2 border border-hairline rounded-card p-3.5 flex flex-col";
-
-function HeroDashboard() {
-  return (
-    <div className="relative grid grid-cols-[repeat(auto-fit,minmax(168px,1fr))] gap-3">
-      {/* AI Search Insights */}
-      <div className={`${statCard} gap-2`}>
-        <div className={cardLabel}>AI Search Insights</div>
-        <div className="text-[26px] font-bold tracking-[-0.02em] text-brand-orange">24,568</div>
-        <div className="text-[10.5px] text-[#8a8a8a]">AI searches</div>
-        <svg viewBox="0 0 120 30" preserveAspectRatio="none" className="h-[26px] w-full" aria-hidden>
-          <polyline
-            points="0,24 15,20 30,22 45,14 60,17 75,9 90,12 105,5 120,7"
-            fill="none"
-            stroke="#F2681C"
-            strokeWidth="2"
-          />
-        </svg>
-      </div>
-
-      {/* Top AI Search Queries */}
-      <div className={`${statCard} gap-2.5`}>
-        <div className={cardLabel}>Top AI Search Queries</div>
-        <div className="flex flex-col gap-[7px]">
-          {[
-            { label: "1. Your Brand", width: "92%", color: "#F2681C", strong: true },
-            { label: "2. Competitor A", width: "68%", color: "#7a3d15", strong: false },
-            { label: "3. Competitor B", width: "47%", color: "#7a3d15", strong: false },
-            { label: "4. Competitor C", width: "31%", color: "#7a3d15", strong: false },
-          ].map((row) => (
-            <div key={row.label} className="flex flex-col gap-[3px]">
-              <div className={`text-[10.5px] ${row.strong ? "text-white" : "text-body"}`}>
-                {row.label}
-              </div>
-              <div className="h-[5px] rounded-sm bg-[#1e1e1e]">
-                <div
-                  className="h-full rounded-sm"
-                  style={{ width: row.width, background: row.color }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* AI Visibility Score */}
-      <div className={`${statCard} gap-2`}>
-        <div className={cardLabel}>AI Visibility Score</div>
-        <div className="flex items-baseline gap-2">
-          <div className="text-[26px] font-bold tracking-[-0.02em] text-brand-orange">62%</div>
-          <div className="text-[10px] text-[#8a8a8a]">vs. last 30 days</div>
-        </div>
-        <div className="flex h-[38px] items-end gap-[5px]">
-          {[
-            { height: "34%", color: "#4a2611" },
-            { height: "46%", color: "#6b3413" },
-            { height: "58%", color: "#8f4415" },
-            { height: "70%", color: "#c15718" },
-            { height: "86%", color: "#F2681C" },
-            { height: "100%", color: "#F2681C" },
-          ].map((bar, index) => (
-            <div
-              key={index}
-              className="flex-1"
-              style={{ height: bar.height, background: bar.color }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Sources That Drive Discovery */}
-      <div className={`${statCard} gap-2.5`}>
-        <div className={cardLabel}>Sources That Drive Discovery</div>
-        <div className="flex flex-col gap-2">
-          {[
-            { label: "Media Mentions", width: "90%", color: "#F2681C" },
-            { label: "Reviews & Ratings", width: "74%", color: "#F2681C" },
-            { label: "Business Directories", width: "58%", color: "#3DD9A9" },
-            { label: "Expert Content", width: "44%", color: "#3DD9A9" },
-            { label: "Third-Party Blogs", width: "30%", color: "#6b6b6b" },
-          ].map((row) => (
-            <div key={row.label} className="flex items-center gap-2">
-              <span
-                className="h-[5px] w-[5px] flex-none rounded-full"
-                style={{ background: row.color }}
-              />
-              <span className="flex-1 text-[10.5px] text-body">{row.label}</span>
-              <span className="block h-1 w-[34px] bg-[#1e1e1e]">
-                <span className="block h-full" style={{ width: row.width, background: row.color }} />
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Brand Mentions */}
-      <div className={`${statCard} gap-2.5`}>
-        <div className={cardLabel}>Brand Mentions</div>
-        <div className="flex items-center gap-3">
-          <div
-            className="flex h-[58px] w-[58px] flex-none items-center justify-center rounded-full"
-            style={{
-              background:
-                "conic-gradient(#F2681C 0 42%,#c15718 42% 66%,#3DD9A9 66% 86%,#3a3a3a 86% 100%)",
-            }}
-          >
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-card-2 text-sm font-bold">
-              128
-            </div>
-          </div>
-          <div className="flex flex-col gap-1 text-[9.5px] text-body">
-            {[
-              { label: "News & Media", color: "#F2681C" },
-              { label: "Reviews", color: "#c15718" },
-              { label: "Social & Forums", color: "#3DD9A9" },
-              { label: "Blogs & Sites", color: "#3a3a3a" },
-            ].map((row) => (
-              <div key={row.label} className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5" style={{ background: row.color }} />
-                {row.label}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* What AI Is Looking At */}
-      <div className={`${statCard} gap-2.5`}>
-        <div className={cardLabel}>What AI Is Looking At</div>
-        <div className="flex flex-col gap-[9px]">
-          {[
-            "Authoritative Mentions",
-            "Positive Sentiment",
-            "Strong Citations",
-            "Verified Information",
-          ].map((item) => (
-            <div key={item} className="flex items-center gap-2 text-[10.5px] text-body">
-              <span className="text-xs leading-none text-brand-teal">&#10003;</span>
-              {item}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Search Growth Trend */}
-      <div className={`${statCard} gap-2`}>
-        <div className={cardLabel}>Search Growth Trend</div>
-        <div className="flex items-baseline gap-[7px]">
-          <div className="text-[26px] font-bold tracking-[-0.02em] text-brand-orange">3.2x</div>
-          <div className="text-[10px] text-[#8a8a8a]">higher</div>
-        </div>
-        <svg viewBox="0 0 120 44" preserveAspectRatio="none" className="h-[42px] w-full" aria-hidden>
-          <polyline
-            points="0,40 20,36 40,30 60,25 80,15 100,11 120,3"
-            fill="none"
-            stroke="#3DD9A9"
-            strokeWidth="2"
-          />
-          <polyline
-            points="0,42 20,40 40,38 60,36 80,33 100,31 120,28"
-            fill="none"
-            stroke="#3a3a3a"
-            strokeWidth="1.5"
-          />
-        </svg>
-      </div>
-
-      {/* Audience Engagement */}
-      <div className={`${statCard} gap-2.5`}>
-        <div className={cardLabel}>Audience Engagement</div>
-        <div className="flex items-center gap-3">
-          <div
-            className="flex h-[52px] w-[52px] flex-none items-center justify-center rounded-full"
-            style={{ background: "conic-gradient(#3DD9A9 0 87%,#242424 87% 100%)" }}
-          >
-            <div className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-card-2 text-xs font-bold text-brand-teal">
-              87%
-            </div>
-          </div>
-          <div className="flex h-10 flex-1 items-end gap-1">
-            {[
-              { height: "52%", color: "#2f6d59" },
-              { height: "74%", color: "#2f6d59" },
-              { height: "44%", color: "#2f6d59" },
-              { height: "88%", color: "#3DD9A9" },
-              { height: "66%", color: "#2f6d59" },
-            ].map((bar, index) => (
-              <div
-                key={index}
-                className="flex-1"
-                style={{ height: bar.height, background: bar.color }}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="text-[10px] text-[#8a8a8a]">Engagement rate</div>
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Page                                                                */
-/* ------------------------------------------------------------------ */
+const heroAlt =
+  "A humanoid robot seen from behind, facing a wall of dashboards reporting AI search insights, brand mentions and AI visibility scores";
 
 export default function Home() {
   return (
-    <main className="w-full bg-bg text-white px-[clamp(16px,5vw,120px)] pt-[clamp(28px,4vw,64px)]">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-[clamp(20px,2.4vw,32px)]">
+    <>
+      <SiteNav />
+
+      <main className="mx-auto flex max-w-[1200px] flex-col gap-6 px-6 pb-6">
         {/* ---------------------------------------------------------- Hero */}
-        <section className="grid grid-cols-[repeat(auto-fit,minmax(330px,1fr))] items-start gap-[clamp(28px,4vw,56px)] pt-[clamp(8px,2vw,24px)] pb-[clamp(16px,2vw,28px)]">
-          <div className="flex max-w-[620px] flex-col gap-[22px]">
+        <section className="grid items-center gap-10 py-10 md:grid-cols-[45fr_55fr] md:py-14">
+          <div className="flex flex-col gap-5">
             <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.22em] text-body">
               <span>John Rose</span>
               <span className="text-brand-orange">|</span>
               <span>Samson Ogbu</span>
             </div>
 
-            <h1 className="m-0 flex flex-wrap items-center gap-x-[0.24em] text-[clamp(44px,5.4vw,78px)] font-bold uppercase leading-[0.94] tracking-[-0.02em]">
+            <h1 className="m-0 flex flex-wrap items-center gap-x-[0.24em] text-[40px] font-bold uppercase leading-[0.94] tracking-[-0.02em] md:text-[56px] lg:text-[64px]">
               <span className="whitespace-nowrap">PR FOR</span>
               <span className="inline-flex items-center whitespace-nowrap">
                 <span>R</span>
@@ -255,7 +50,7 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="m-0 text-[clamp(19px,2vw,25px)] font-medium leading-[1.35] text-white text-pretty">
+            <p className="m-0 text-[19px] font-medium leading-[1.35] text-white text-pretty md:text-[23px]">
               If AI can&apos;t find, understand or trust your brand, you may be invisible to your
               next customer.
             </p>
@@ -271,81 +66,82 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="relative flex flex-col gap-3">
+          <div className="relative">
             <div
-              className="pointer-events-none absolute -inset-x-[4%] -top-[6%] bottom-[30%]"
+              className="pointer-events-none absolute -inset-x-[4%] -top-[6%] bottom-[10%]"
               style={{
                 background:
                   "radial-gradient(60% 60% at 55% 40%,rgba(242,104,28,.22),rgba(0,0,0,0) 70%)",
               }}
             />
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-card border border-hairline">
+            <div className="relative overflow-hidden rounded-card border border-hairline">
               <Image
                 src="/images/hero.png"
-                alt="A humanoid robot seen from behind, facing a wall of dashboards reporting AI search insights, brand mentions and AI visibility scores"
-                fill
+                alt={heroAlt}
+                width={1084}
+                height={992}
                 priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 55vw"
+                className="h-auto w-full"
               />
             </div>
-            <HeroDashboard />
           </div>
         </section>
 
         {/* ------------------------------------------------------ Register */}
-        <section
-          id="register"
-          className={`${sectionCard} grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] items-start gap-[clamp(28px,4vw,56px)]`}
-        >
-          <div className="flex flex-col gap-[18px]">
-            <h2 className="m-0 text-[clamp(28px,3.2vw,40px)] font-bold leading-[1.1] tracking-[-0.02em] text-brand-orange text-pretty">
-              Register Today For Our Next Live Webinar!
-            </h2>
-            <p className="m-0 text-[clamp(16px,1.5vw,19px)] font-semibold leading-[1.45] text-white text-pretty">
-              <span className="text-brand-teal">PR for Robots</span>{" "}
-              <span className="text-[#4a4a4a]">|</span> How Publicity Fuels Patient AI searches for
-              Healthcare
-            </p>
+        <section id="register" className={sectionCard}>
+          <div className="grid gap-8 md:grid-cols-2 md:gap-0 md:divide-x md:divide-hairline">
+            <div className="flex flex-col gap-4 md:pr-10">
+              <h2 className="m-0 text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-brand-orange text-pretty md:text-[36px]">
+                Register Today For Our Next Live Webinar!
+              </h2>
+              <p className="m-0 text-[17px] font-semibold leading-[1.45] text-white text-pretty md:text-[19px]">
+                <span className="text-brand-teal">PR for Robots</span>{" "}
+                <span className="text-[#4a4a4a]">|</span> How Publicity Fuels Patient AI searches
+                for Healthcare
+              </p>
 
-            <div className="flex w-fit max-w-full items-center gap-3 rounded-card border border-hairline bg-card-2 px-4 py-3">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
-                <rect x="1.5" y="3.5" width="15" height="13" rx="1.5" stroke="#F2681C" strokeWidth="1.4" />
-                <path d="M1.5 7.5h15M5.5 1.5v3M12.5 1.5v3" stroke="#F2681C" strokeWidth="1.4" />
-              </svg>
-              <span className="font-mono text-[13.5px] tracking-[0.04em] text-white">
-                September 30, 2026
-              </span>
-              <span className="text-brand-orange">|</span>
-              <span className="font-mono text-[13.5px] tracking-[0.04em] text-brand-orange">
-                3:00 PM GST
-              </span>
+              <div className="flex w-fit max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-card border border-hairline bg-card-2 px-4 py-3">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
+                  <rect x="1.5" y="3.5" width="15" height="13" rx="1.5" stroke="#F2681C" strokeWidth="1.4" />
+                  <path d="M1.5 7.5h15M5.5 1.5v3M12.5 1.5v3" stroke="#F2681C" strokeWidth="1.4" />
+                </svg>
+                <span className="font-mono text-[13.5px] tracking-[0.04em] text-white">
+                  September 30, 2026
+                </span>
+                <span className="text-brand-orange">|</span>
+                <span className="font-mono text-[13.5px] tracking-[0.04em] text-brand-orange">
+                  3:00 PM GST
+                </span>
+              </div>
+
+              <p className={bodyCopy}>
+                Patients are increasingly turning to AI before choosing doctors, hospitals, clinics,
+                physicians and healthcare providers as well as to diagnose symptoms and learn more
+                about treatments.
+              </p>
+              <p className={bodyCopy}>
+                In our latest{" "}
+                <a href="#register" className="text-brand-teal hover:text-[#7ceccb]">
+                  PR for Robots
+                </a>{" "}
+                session, we will discuss how publicity, authority, SEO, AEO and third-party
+                credibility influence AI recommendations, and how healthcare organizations can
+                become more visible, trusted and recommended when patients ask AI who to trust.
+              </p>
             </div>
 
-            <p className={bodyCopy}>
-              Patients are increasingly turning to AI before choosing doctors, hospitals, clinics,
-              physicians and healthcare providers as well as to diagnose symptoms and learn more
-              about treatments.
-            </p>
-            <p className={bodyCopy}>
-              In our latest{" "}
-              <a href="#register" className="text-brand-teal hover:text-[#7ceccb]">
-                PR for Robots
-              </a>{" "}
-              session, we will discuss how publicity, authority, SEO, AEO and third-party
-              credibility influence AI recommendations, and how healthcare organizations can become
-              more visible, trusted and recommended when patients ask AI who to trust.
-            </p>
+            <div className="md:pl-10">
+              <RegisterForm />
+            </div>
           </div>
-
-          <RegisterForm />
         </section>
 
         {/* ---------------------------------------------------- More About */}
-        <section className={`${sectionCard} flex flex-col gap-[clamp(20px,2.4vw,32px)]`}>
+        <section id="about" className={`${sectionCard} flex flex-col gap-7`}>
           <h2 className={sectionHeading}>More About PR for Robots</h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-[clamp(28px,4vw,56px)]">
-            <div className="flex flex-col gap-4">
+          <div className="grid gap-8 md:grid-cols-2 md:gap-0 md:divide-x md:divide-hairline">
+            <div className="flex flex-col gap-4 md:pr-10">
               <p className={bodyCopy}>
                 AI is transforming how customers discover and evaluate brands. While websites and
                 SEO still matter, AI increasingly relies on trusted third-party sources, media
@@ -363,7 +159,7 @@ export default function Home() {
                 that marketers, communicators and business leaders can put to work immediately.
               </p>
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 md:pl-10">
               <p className={bodyCopy}>
                 Learn why a fully integrated approach to PR, search, content and marketing is
                 essential as AI rewards authority, consistency and third-party validation across
@@ -383,11 +179,13 @@ export default function Home() {
         </section>
 
         {/* ---------------------------------------------- Previous webinars */}
-        <section className={`${sectionCard} flex flex-col gap-[clamp(20px,2.4vw,32px)]`}>
+        <section id="webinars" className={`${sectionCard} flex flex-col gap-7`}>
           <h2 className={sectionHeading}>Watch Our Previous Webinars</h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[clamp(20px,2.4vw,28px)]">
+          {/* -mx-6 pulls the outer columns back to the card edge so all three
+              tracks carry the same 24px inset and stay exactly equal in width. */}
+          <div className="grid gap-8 md:-mx-6 md:grid-cols-3 md:gap-0 md:divide-x md:divide-hairline">
             {videos.map((video) => (
-              <div key={video.id} className="flex flex-col gap-3.5">
+              <div key={video.id} className="flex flex-col gap-3.5 md:px-6">
                 <a
                   href={video.url}
                   target="_blank"
@@ -413,7 +211,7 @@ export default function Home() {
                   href={video.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.1em] text-brand-teal hover:text-[#7ceccb]"
+                  className="mt-auto inline-flex items-center gap-2 pt-1 text-[13px] font-semibold uppercase tracking-[0.1em] text-brand-teal hover:text-[#7ceccb]"
                 >
                   Watch Now <span>&#8594;</span>
                 </a>
@@ -423,10 +221,10 @@ export default function Home() {
         </section>
 
         {/* ----------------------------------------------------- Your hosts */}
-        <section className={`${sectionCard} flex flex-col gap-[clamp(20px,2.4vw,32px)]`}>
+        <section className={`${sectionCard} flex flex-col gap-7`}>
           <h2 className={sectionHeading}>Meet Your Hosts</h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-[clamp(28px,4vw,56px)]">
-            <div className="flex items-start gap-[22px]">
+          <div className="grid gap-8 md:grid-cols-2 md:gap-10">
+            <div className="flex items-start gap-5">
               <div className="host-portrait h-[132px] w-[132px] flex-none">
                 <Image
                   src="/images/john-rose.jpeg"
@@ -448,7 +246,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex items-start gap-[22px]">
+            <div className="flex items-start gap-5">
               <div className="host-portrait h-[132px] w-[132px] flex-none">
                 <Image
                   src="/images/samson-ogbu.png"
@@ -473,45 +271,45 @@ export default function Home() {
         </section>
 
         {/* --------------------------------------------------- Closing CTA */}
-        <section
-          className={`${sectionCard} grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] items-center gap-[clamp(28px,4vw,56px)]`}
-        >
-          <div className="flex flex-col gap-4">
-            <h2 className="m-0 text-[clamp(26px,3vw,36px)] font-semibold leading-[1.15] tracking-[-0.015em] text-brand-teal text-pretty">
-              Ready for the Next Conversation?
-            </h2>
-            <p className="m-0 max-w-[56ch] text-base leading-[1.75] text-body text-pretty">
-              Let&apos;s discuss how AI is changing the way customers discover, evaluate and choose
-              brands—and how a fully integrated communications strategy can help ensure yours is one
-              of the brands it recommends.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3.5 justify-self-stretch">
-            <a
-              href="#register"
-              className="flex items-center justify-center gap-3 rounded-card bg-brand-orange px-6 py-[18px] text-sm font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#ff7a2e]"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
-                <rect x="1.5" y="3.5" width="15" height="13" rx="1.5" stroke="#fff" strokeWidth="1.4" />
-                <path d="M1.5 7.5h15M5.5 1.5v3M12.5 1.5v3" stroke="#fff" strokeWidth="1.4" />
-              </svg>
-              Book a Consultation
-            </a>
-            <a
-              href="#register"
-              className="flex items-center justify-center gap-3 rounded-card border border-brand-teal bg-transparent px-6 py-[17px] text-center text-sm font-bold uppercase tracking-[0.12em] text-brand-teal transition-colors hover:bg-brand-teal/10"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
-                <circle cx="8" cy="8" r="5.5" stroke="#3DD9A9" strokeWidth="1.4" />
-                <path d="M12 12l4 4" stroke="#3DD9A9" strokeWidth="1.4" />
-              </svg>
-              Request an AI Visibility Audit
-            </a>
+        <section id="contact" className={sectionCard}>
+          <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
+            <div className="flex flex-col gap-4">
+              <h2 className="m-0 text-[26px] font-semibold leading-[1.15] tracking-[-0.015em] text-brand-teal text-pretty md:text-[34px]">
+                Ready for the Next Conversation?
+              </h2>
+              <p className="m-0 max-w-[56ch] text-base leading-[1.75] text-body text-pretty">
+                Let&apos;s discuss how AI is changing the way customers discover, evaluate and
+                choose brands—and how a fully integrated communications strategy can help ensure
+                yours is one of the brands it recommends.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3.5">
+              <a
+                href="#register"
+                className="flex w-full items-center justify-center gap-3 rounded-card bg-brand-orange px-6 py-[18px] text-sm font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#ff7a2e]"
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
+                  <rect x="1.5" y="3.5" width="15" height="13" rx="1.5" stroke="#fff" strokeWidth="1.4" />
+                  <path d="M1.5 7.5h15M5.5 1.5v3M12.5 1.5v3" stroke="#fff" strokeWidth="1.4" />
+                </svg>
+                Book a Consultation
+              </a>
+              <a
+                href="#register"
+                className="flex w-full items-center justify-center gap-3 rounded-card border border-brand-teal bg-transparent px-6 py-[17px] text-center text-sm font-bold uppercase tracking-[0.12em] text-brand-teal transition-colors hover:bg-brand-teal/10"
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
+                  <circle cx="8" cy="8" r="5.5" stroke="#3DD9A9" strokeWidth="1.4" />
+                  <path d="M12 12l4 4" stroke="#3DD9A9" strokeWidth="1.4" />
+                </svg>
+                Request an AI Visibility Audit
+              </a>
+            </div>
           </div>
         </section>
 
         {/* ------------------------------------------------------- Footer */}
-        <footer className="flex flex-col items-center gap-5 pt-[clamp(40px,6vw,80px)] pb-[clamp(32px,4vw,56px)]">
+        <footer className="flex flex-col items-center gap-4 py-14">
           <div className="relative h-[76px] w-[min(420px,100%)]">
             <Image
               src="/images/rose-fitch-logo.png"
@@ -524,8 +322,16 @@ export default function Home() {
           <div className="text-center font-mono text-[11px] uppercase tracking-[0.18em] text-[#5a5a5a]">
             Rose Creative Marketing &nbsp;&middot;&nbsp; Fitch Technologies
           </div>
+          <a
+            href="https://fitchtechnologies.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-center text-xs text-[#888] transition-colors hover:text-brand-teal"
+          >
+            Web Design by Fitch Technologies
+          </a>
         </footer>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
