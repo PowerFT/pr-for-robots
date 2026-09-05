@@ -8,12 +8,21 @@ import { videos } from "@/data/videos";
 /* Shared bits                                                         */
 /* ------------------------------------------------------------------ */
 
-/** One full-width section card: #0C0C0C, 1px hairline, 8px radius, 40px inset. */
+/**
+ * Centred content column: 1200px until the viewport clears 1440px, then 1440px.
+ * 24px side padding on mobile, 48px from 1024px up. Shared with the nav so both
+ * gutters line up.
+ */
+const contentWidth = "mx-auto w-full max-w-[1200px] px-6 lg:px-12 3xl:max-w-[1440px]";
+
+/** One full-width section card: #0C0C0C, 1px hairline, 8px radius. */
 const sectionCard =
-  "scroll-mt-16 bg-card border border-hairline rounded-card p-6 md:p-10";
+  "scroll-mt-16 bg-card border border-hairline rounded-card p-6 md:p-10 xl:p-14";
 const sectionHeading =
   "m-0 text-[26px] md:text-[32px] font-semibold tracking-[-0.01em] text-brand-teal";
 const bodyCopy = "m-0 text-base leading-[1.75] text-body text-pretty";
+/** Body copy inside a widening two-column section — capped for line length. */
+const columnCopy = `${bodyCopy} lg:max-w-[70ch]`;
 
 const heroAlt =
   "A humanoid robot seen from behind, facing a wall of dashboards reporting AI search insights, brand mentions and AI visibility scores";
@@ -23,7 +32,7 @@ export default function Home() {
     <>
       <SiteNav />
 
-      <main className="mx-auto flex max-w-[1200px] flex-col gap-6 px-6 pb-6">
+      <main className={`${contentWidth} flex flex-col gap-6 pb-6`}>
         {/* ---------------------------------------------------------- Hero */}
         <section className="grid items-center gap-10 py-10 md:grid-cols-[45fr_55fr] md:py-14">
           <div className="flex flex-col gap-5">
@@ -115,12 +124,12 @@ export default function Home() {
                 </span>
               </div>
 
-              <p className={bodyCopy}>
+              <p className={columnCopy}>
                 Patients are increasingly turning to AI before choosing doctors, hospitals, clinics,
                 physicians and healthcare providers as well as to diagnose symptoms and learn more
                 about treatments.
               </p>
-              <p className={bodyCopy}>
+              <p className={columnCopy}>
                 In our latest{" "}
                 <a href="#register" className="text-brand-teal hover:text-[#7ceccb]">
                   PR for Robots
@@ -142,16 +151,16 @@ export default function Home() {
           <h2 className={sectionHeading}>More About PR for Robots</h2>
           <div className="grid gap-8 md:grid-cols-2 md:gap-0 md:divide-x md:divide-hairline">
             <div className="flex flex-col gap-4 md:pr-10">
-              <p className={bodyCopy}>
+              <p className={columnCopy}>
                 AI is transforming how customers discover and evaluate brands. While websites and
                 SEO still matter, AI increasingly relies on trusted third-party sources, media
                 coverage, authoritative content and consistent brand signals when generating
                 recommendations.
               </p>
-              <p className="m-0 text-base leading-[1.75] text-white text-pretty">
+              <p className="m-0 text-base leading-[1.75] text-white text-pretty lg:max-w-[70ch]">
                 Brands that fail to build these signals risk becoming invisible.
               </p>
-              <p className={bodyCopy}>
+              <p className={columnCopy}>
                 <a href="#register" className="text-brand-teal hover:text-[#7ceccb]">
                   PR for Robots
                 </a>{" "}
@@ -160,16 +169,16 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-col gap-4 md:pl-10">
-              <p className={bodyCopy}>
+              <p className={columnCopy}>
                 Learn why a fully integrated approach to PR, search, content and marketing is
                 essential as AI rewards authority, consistency and third-party validation across
                 every channel.
               </p>
-              <p className={bodyCopy}>
+              <p className={columnCopy}>
                 From media placements to mentions, backlinks to brand sentiment, we help you build
                 the digital footprint AI relies on to surface and recommend you.
               </p>
-              <p className={bodyCopy}>
+              <p className={columnCopy}>
                 Whether you&apos;re in healthcare, real estate, travel, or any competitive industry,
                 PR for Robots helps your brand show up where AI—and your future customers—are
                 looking.

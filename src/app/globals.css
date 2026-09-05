@@ -11,6 +11,9 @@
 
   --radius-card: 8px;
 
+  /* Container steps up to its full width once the viewport clears 1440px. */
+  --breakpoint-3xl: 90rem;
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
