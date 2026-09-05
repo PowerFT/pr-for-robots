@@ -16,20 +16,6 @@ const cardLabel =
   "font-mono text-[9.5px] tracking-[0.14em] uppercase text-brand-teal";
 
 /**
- * Art direction carried over from the Claude Design export, whose `<image-slot>`
- * elements were all still empty — no artwork was ever attached to the project.
- * Keyed by the webinar ids in `videos.ts`.
- */
-const thumbnailBriefs: Record<string, string> = {
-  "seo-world-run-by-machines":
-    'THUMBNAIL 1280×720 — robot at a bank of monitors, one screen reading "SEO" with a rising orange bar chart',
-  "travel-disrupted":
-    'THUMBNAIL 1280×720 — robot in an airport terminal, departures board reading "DELAYED / CANCELLED" in orange, aircraft overhead',
-  "real-estate":
-    "THUMBNAIL 1280×720 — robot facing a city skyline of high-rise towers at sunset, warm orange sky",
-};
-
-/**
  * Stands in for an export image slot we have no file for. It renders the slot's
  * own art direction so the layout is complete and the gap stays obvious.
  */
@@ -44,16 +30,6 @@ function ImageSlot({ description }: { description: string }) {
       <p className="m-0 max-w-[46ch] text-[11.5px] leading-[1.5] text-[#6b6b6b] text-pretty">
         {description}
       </p>
-    </div>
-  );
-}
-
-function PlayButton() {
-  return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/95">
-        <div className="ml-1 h-0 w-0 border-y-[9px] border-l-[15px] border-y-transparent border-l-black" />
-      </div>
     </div>
   );
 }
@@ -424,20 +400,21 @@ export default function Home() {
           <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[clamp(20px,2.4vw,28px)]">
             {videos.map((video) => (
               <div key={video.id} className="flex flex-col gap-3.5">
-                <div className="relative aspect-video w-full overflow-hidden rounded-card border border-hairline">
-                  {video.thumbnail ? (
-                    <Image
-                      src={video.thumbnail}
-                      alt={video.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <ImageSlot description={thumbnailBriefs[video.id] ?? "THUMBNAIL 1280×720"} />
-                  )}
-                  <PlayButton />
-                </div>
+                <a
+                  href={video.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Watch: ${video.title}`}
+                  className="group relative block aspect-video w-full overflow-hidden rounded-card border border-hairline"
+                >
+                  <Image
+                    src={video.thumbnail}
+                    alt={video.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  />
+                </a>
                 <h3 className="m-0 text-[17px] font-bold leading-[1.35] text-white text-pretty">
                   {video.title}
                 </h3>
@@ -445,7 +422,9 @@ export default function Home() {
                   {video.description}
                 </p>
                 <a
-                  href={video.url || "#"}
+                  href={video.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.1em] text-brand-teal hover:text-[#7ceccb]"
                 >
                   Watch Now <span>&#8594;</span>
