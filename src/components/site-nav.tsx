@@ -23,12 +23,32 @@ export function SiteNav() {
     return () => desktop.removeEventListener("change", close);
   }, []);
 
+  /**
+   * Drive the scroll ourselves so Home can return to the top and so the URL
+   * keeps a clean hash. Anchors keep their href, so modified clicks still open
+   * a new tab and the links read correctly to assistive tech; scroll-margin-top
+   * on each target clears the sticky nav.
+   */
   function handleNavigate(event: React.MouseEvent<HTMLAnchorElement>, href: string) {
     setOpen(false);
-    if (href === "#top") {
-      event.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Let modified clicks (new tab/window) and non-primary buttons behave normally.
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+      return;
     }
+
+    event.preventDefault();
+
+    if (href === "#top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+      return;
+    }
+
+    const target = document.querySelector(href);
+    if (!target) return;
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    history.replaceState(null, "", href);
   }
 
   return (
