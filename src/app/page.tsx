@@ -15,25 +15,6 @@ const bodyCopy = "m-0 text-base leading-[1.75] text-body text-pretty";
 const cardLabel =
   "font-mono text-[9.5px] tracking-[0.14em] uppercase text-brand-teal";
 
-/**
- * Stands in for an export image slot we have no file for. It renders the slot's
- * own art direction so the layout is complete and the gap stays obvious.
- */
-function ImageSlot({ description }: { description: string }) {
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-card-2 px-6 text-center">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-        <rect x="3" y="5" width="18" height="14" rx="2" stroke="#4a4a4a" strokeWidth="1.5" />
-        <circle cx="8.5" cy="10" r="1.5" stroke="#4a4a4a" strokeWidth="1.5" />
-        <path d="M4 17l5-5 4 4 3-2 4 4" stroke="#4a4a4a" strokeWidth="1.5" />
-      </svg>
-      <p className="m-0 max-w-[46ch] text-[11.5px] leading-[1.5] text-[#6b6b6b] text-pretty">
-        {description}
-      </p>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 /* Hero dashboard cards                                                */
 /* ------------------------------------------------------------------ */
@@ -299,7 +280,14 @@ export default function Home() {
               }}
             />
             <div className="relative aspect-[16/10] w-full overflow-hidden rounded-card border border-hairline">
-              <ImageSlot description="HERO ILLUSTRATION — humanoid robot, three-quarter from behind, orange/black duotone, facing a wall of dashboards" />
+              <Image
+                src="/images/hero.png"
+                alt="A humanoid robot seen from behind, facing a wall of dashboards reporting AI search insights, brand mentions and AI visibility scores"
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain"
+              />
             </div>
             <HeroDashboard />
           </div>
