@@ -236,9 +236,18 @@ export default function Home() {
                   John Rose
                 </div>
                 <p className="m-0 text-[15px] leading-[1.7] text-body text-pretty">
-                  John Rose, Chairman of Rose Creative Marketing, a global marketing and PR leader
-                  with a 40+ year career spanning the USA, LATAM, Europe, CIS, and the Middle East
-                  representing some of the world&apos;s most successful brands.
+                  John Rose, Chairman of{" "}
+                  <a
+                    href="https://rosecreative.marketing/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-brand-teal underline-offset-2 hover:underline"
+                  >
+                    Rose Creative Marketing
+                  </a>
+                  , a global marketing and PR leader with a 40+ year career spanning the USA, LATAM,
+                  Europe, CIS, and the Middle East representing some of the world&apos;s most
+                  successful brands.
                 </p>
               </div>
             </div>
@@ -258,9 +267,17 @@ export default function Home() {
                   Samson Ogbu
                 </div>
                 <p className="m-0 text-[15px] leading-[1.7] text-body text-pretty">
-                  Samson Ogbu, Chief Technology Officer of Fitch Technologies, an MBA- and
-                  PMP-certified technologist building AI-powered solutions that help brands convert
-                  traffic into growth.
+                  Samson Ogbu, Chief Technology Officer of{" "}
+                  <a
+                    href="https://fitchtechnologies.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-brand-teal underline-offset-2 hover:underline"
+                  >
+                    Fitch Technologies
+                  </a>
+                  , an MBA- and PMP-certified technologist building AI-powered solutions that help
+                  brands convert traffic into growth.
                 </p>
               </div>
             </div>
