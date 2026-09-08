@@ -22,6 +22,8 @@ export function RegisterForm() {
       name: String(form.get("name") ?? ""),
       company: String(form.get("company") ?? ""),
       email: String(form.get("email") ?? ""),
+      website: String(form.get("website") ?? ""),
+      pageUrl: window.location.href,
     };
 
     try {
@@ -42,6 +44,17 @@ export function RegisterForm() {
     } finally {
       setPending(false);
     }
+  }
+
+  if (submitted) {
+    return (
+      <div
+        className="border border-hairline rounded-card bg-bg px-3.5 py-[26px] text-center text-[15px] leading-relaxed text-brand-teal"
+        role="status"
+      >
+        Thanks — you&rsquo;re registered. We&rsquo;ll be in touch with your webinar details.
+      </div>
+    );
   }
 
   return (
@@ -74,6 +87,17 @@ export function RegisterForm() {
         <input name="email" type="email" placeholder="Email" required aria-label="Email" className={fieldInput} />
       </div>
 
+      {/* Honeypot: hidden from people, irresistible to bots. Submissions that
+          fill it in are dropped server-side. */}
+      <input
+        name="website"
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+      />
+
       <button
         type="submit"
         disabled={pending}
@@ -92,13 +116,7 @@ export function RegisterForm() {
 
       {error ? (
         <div className="text-[13px] text-brand-orange border-t border-hairline pt-3" role="alert">
-          {error}
-        </div>
-      ) : null}
-
-      {submitted ? (
-        <div className="text-[13px] text-brand-teal border-t border-hairline pt-3" role="status">
-          Thanks — your seat is saved. Check your inbox for the joining link.
+          {error} <button type="submit" className="underline underline-offset-2 cursor-pointer">Retry</button>
         </div>
       ) : null}
     </form>
