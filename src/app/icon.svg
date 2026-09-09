@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 104">
+  <!--
+    The robot head that stands in for the second O in "R⬡BOTS".
+    Geometry is copied verbatim from RobotHead in src/components/wordmark.tsx
+    (native viewBox 0 0 72 94) and centred in a square canvas so the tab icon
+    and the wordmark can't drift apart.
+  -->
+  <g transform="translate(16 5)" fill="none">
+    <!-- antenna -->
+    <circle cx="36" cy="6" r="6" fill="#F2681C" />
+    <rect x="34.5" y="6" width="3" height="16" fill="#F2681C" />
+    <!-- head -->
+    <rect
+      x="3.75"
+      y="37.75"
+      width="64.5"
+      height="52.5"
+      rx="10.25"
+      stroke="#F2681C"
+      stroke-width="7.5"
+    />
+    <!-- eyes -->
+    <circle cx="25.5" cy="64" r="5" fill="#F2681C" />
+    <circle cx="46.5" cy="64" r="5" fill="#F2681C" />
+  </g>
+</svg>
