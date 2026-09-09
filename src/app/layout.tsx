@@ -20,8 +20,12 @@ const ogImage = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://prforrobotsmarketing.com"),
   title,
   description,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title,
     description,
