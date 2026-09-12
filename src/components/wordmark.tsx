@@ -21,6 +21,9 @@ const sizeClass: Record<WordmarkSize, string> = {
  * like a letter; the SVG is pinned to the wrapper's bottom and allowed to
  * overflow upward by 0.22em for the antenna, which keeps the head box sitting
  * on the same baseline as R and BOTS at any size.
+ *
+ * The head and antenna fill with currentColor so they always match the
+ * letters; the face is cut in solid black.
  */
 function RobotHead() {
   return (
@@ -28,25 +31,18 @@ function RobotHead() {
       <svg
         viewBox="0 0 72 94"
         className="absolute bottom-0 left-0 h-[0.94em] w-full overflow-visible"
-        fill="none"
+        fill="currentColor"
         aria-hidden
       >
         {/* antenna */}
-        <circle cx="36" cy="6" r="6" fill="#F2681C" />
-        <rect x="34.5" y="6" width="3" height="16" fill="#F2681C" />
+        <circle cx="36" cy="7" r="7" />
+        <rect x="34" y="12" width="4" height="24" />
         {/* head */}
-        <rect
-          x="3.75"
-          y="37.75"
-          width="64.5"
-          height="52.5"
-          rx="10.25"
-          stroke="#F2681C"
-          strokeWidth="7.5"
-        />
-        {/* eyes */}
-        <circle cx="25.5" cy="64" r="5" fill="#F2681C" />
-        <circle cx="46.5" cy="64" r="5" fill="#F2681C" />
+        <rect x="0" y="34" width="72" height="60" rx="14" />
+        {/* face */}
+        <circle cx="19.5" cy="59" r="8" fill="#000" />
+        <circle cx="52.5" cy="59" r="8" fill="#000" />
+        <rect x="26" y="76" width="20" height="4.5" rx="2.25" fill="#000" />
       </svg>
     </span>
   );

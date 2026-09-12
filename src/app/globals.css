@@ -22,9 +22,9 @@ html {
 }
 
 /*
- * Host portraits. The two source photos are unalike — one is already a
- * teal-on-orange duotone, the other a full-colour studio shot on beige — so
- * both get the identical treatment here rather than per-image tweaks:
+ * Host portraits. The two source photos are unalike — an outdoor shot with a
+ * warm, blown-out backdrop and a studio shot on beige — so both get the
+ * identical treatment here rather than per-image tweaks:
  * desaturate, then multiply the brand orange over the result. The radial mask
  * fades the frame edges out to the card behind it, so neither photo shows a
  * rectangular edge or much of its original backdrop.

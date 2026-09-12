@@ -24,11 +24,21 @@ const sectionHeading =
 const bodyCopy = "m-0 text-base leading-[1.75] text-body text-pretty";
 /** Body copy inside a widening two-column section — capped for line length. */
 const columnCopy = `${bodyCopy} lg:max-w-[70ch]`;
+/**
+ * 1px hairline before every column but the first, centred in a 48px gap-12.
+ * Positioned outside the column box, so it takes no width from the content.
+ */
+const gapDivider =
+  "md:[&+&]:before:absolute md:[&+&]:before:inset-y-0 md:[&+&]:before:-left-[24.5px] md:[&+&]:before:w-px md:[&+&]:before:bg-hairline";
 
 const heroAlt =
   "A humanoid robot seen from behind, facing a wall of dashboards reporting AI search insights, brand mentions and AI visibility scores";
 
 export default function Home() {
+  // Server-rendered, so no client JS: the page is prerendered, which fixes the
+  // year at build time and every deploy picks up the current one.
+  const year = new Date().getFullYear();
+
   return (
     <>
       <SiteNav />
@@ -178,11 +188,14 @@ export default function Home() {
         {/* ---------------------------------------------- Previous webinars */}
         <section id="webinars" className={`${sectionCard} flex flex-col gap-7`}>
           <h2 className={sectionHeading}>Watch Our Previous Webinars</h2>
-          {/* -mx-6 pulls the outer columns back to the card edge so all three
-              tracks carry the same 24px inset and stay exactly equal in width. */}
-          <div className="grid gap-8 md:-mx-6 md:grid-cols-3 md:gap-0 md:divide-x md:divide-hairline">
+          {/* The column dividers are drawn into the 48px gap rather than as
+              borders: a border sits inside the column box, so divide-x left the
+              bordered columns 1px narrower and their thumbnails 0.57px shorter
+              than the last one. With nothing inside the boxes, all three tracks,
+              thumbnails and title rows are identical. */}
+          <div className="grid gap-8 md:grid-cols-3 md:gap-12">
             {videos.map((video) => (
-              <div key={video.id} className="flex flex-col gap-3.5 md:px-6">
+              <div key={video.id} className={`relative flex flex-col gap-3.5 ${gapDivider}`}>
                 <a
                   href={video.url}
                   target="_blank"
@@ -223,12 +236,14 @@ export default function Home() {
           <div className="grid gap-8 md:grid-cols-2 md:gap-10">
             <div className="flex items-start gap-5">
               <div className="host-portrait h-[132px] w-[132px] flex-none">
+                {/* Source is slightly taller than wide; 20% takes up the small
+                    vertical slack so his face sits in the middle of the circle. */}
                 <Image
-                  src="/images/john-rose.jpeg"
+                  src="/images/john-rose.jpg"
                   alt="John Rose"
                   fill
                   sizes="132px"
-                  className="object-cover"
+                  className="object-cover object-[50%_20%]"
                 />
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-2.5">
@@ -333,17 +348,19 @@ export default function Home() {
               className="object-contain"
             />
           </div>
-          <div className="text-center font-mono text-[11px] uppercase tracking-[0.18em] text-[#5a5a5a]">
-            Rose Creative Marketing &nbsp;&middot;&nbsp; Fitch Technologies
+          <div className="flex flex-col items-center gap-1.5 text-center">
+            <p className="m-0 text-[12px] text-[#888]">
+              &copy; {year} Rose Creative Marketing and Fitch Technologies. All rights reserved.
+            </p>
+            <a
+              href="https://fitchtechnologies.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] text-[#666] transition-colors hover:text-brand-teal"
+            >
+              Web Design by Fitch Technologies
+            </a>
           </div>
-          <a
-            href="https://fitchtechnologies.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-center text-xs text-[#888] transition-colors hover:text-brand-teal"
-          >
-            Web Design by Fitch Technologies
-          </a>
         </footer>
       </main>
     </>
