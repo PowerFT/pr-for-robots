@@ -1,5 +1,3 @@
-import { useId } from "react";
-
 type WordmarkSize = "hero" | "nav";
 
 /**
@@ -26,12 +24,10 @@ const sizeClass: Record<WordmarkSize, string> = {
  * above the head so the antenna overhangs the cap line. Everything is in em, so
  * nav and hero scale identically.
  *
- * Head and antenna fill with currentColor to match the letters. The mouth
- * gradient's id comes from useId so the nav and hero instances don't collide.
+ * Head and antenna fill with currentColor to match the letters; eyes and mouth
+ * are solid black.
  */
 function RobotHead() {
-  const mouthGradient = useId();
-
   return (
     <span className="relative inline-block h-[0.705em] w-[calc(0.705em*100/124)] flex-none">
       <svg
@@ -39,12 +35,6 @@ function RobotHead() {
         className="absolute left-0 top-[calc(0.705em*-44/124)] h-[calc(0.705em*170/124)] w-full overflow-visible"
         aria-hidden
       >
-        <defs>
-          <linearGradient id={mouthGradient} x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stopColor="#F2681C" />
-            <stop offset="1" stopColor="#3DD9A9" />
-          </linearGradient>
-        </defs>
         {/* antenna */}
         <circle cx="50" cy="12" r="11" fill="currentColor" />
         <rect x="47" y="20" width="6" height="30" fill="currentColor" />
@@ -54,10 +44,10 @@ function RobotHead() {
           fill="currentColor"
         />
         {/* eyes */}
-        <circle cx="33" cy="98" r="12" fill="#0F2B27" />
-        <circle cx="67" cy="98" r="12" fill="#0F2B27" />
+        <circle cx="33" cy="98" r="12" fill="#000000" />
+        <circle cx="67" cy="98" r="12" fill="#000000" />
         {/* mouth */}
-        <rect x="38" y="132" width="24" height="6" rx="3" fill={`url(#${mouthGradient})`} />
+        <rect x="38" y="132" width="24" height="6" rx="3" fill="#000000" />
       </svg>
     </span>
   );
