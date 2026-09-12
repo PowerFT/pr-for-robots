@@ -201,15 +201,20 @@ export default function Home() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Watch: ${video.title}`}
-                  className="group relative block aspect-video w-full overflow-hidden rounded-card border border-hairline"
+                  className="group block w-full overflow-hidden rounded-card border border-hairline"
                 >
-                  <Image
-                    src={video.thumbnail}
-                    alt={video.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                  />
+                  {/* Fixed 16:9 frame. The sources are 1600×924, ×836 and ×881;
+                      object-cover crops each into this box, so no artwork's
+                      intrinsic size can reach the layout. */}
+                  <div className="relative aspect-video w-full overflow-hidden">
+                    <Image
+                      src={video.thumbnail}
+                      alt={video.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                    />
+                  </div>
                 </a>
                 <h3 className="m-0 text-[17px] font-bold leading-[1.35] text-white text-pretty">
                   {video.title}
@@ -233,16 +238,18 @@ export default function Home() {
         {/* ----------------------------------------------------- Your hosts */}
         <section className={`${sectionCard} flex flex-col gap-7`}>
           <h2 className={sectionHeading}>Meet Your Hosts</h2>
-          <div className="grid gap-8 md:grid-cols-2 md:gap-10">
+          {/* Side by side from 1024px: below that, two 158px portraits leave
+              each bio only ~120px wide, so the hosts stack instead. */}
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
             <div className="flex items-start gap-5">
-              <div className="host-portrait h-[132px] w-[132px] flex-none">
+              <div className="host-portrait h-[158px] w-[158px] flex-none">
                 {/* Source is slightly taller than wide; 20% takes up the small
                     vertical slack so his face sits in the middle of the circle. */}
                 <Image
                   src="/images/john-rose.jpg"
                   alt="John Rose"
                   fill
-                  sizes="132px"
+                  sizes="158px"
                   className="object-cover object-[50%_20%]"
                 />
               </div>
@@ -268,12 +275,12 @@ export default function Home() {
             </div>
 
             <div className="flex items-start gap-5">
-              <div className="host-portrait h-[132px] w-[132px] flex-none">
+              <div className="host-portrait h-[158px] w-[158px] flex-none">
                 <Image
                   src="/images/samson-ogbu.jpg"
                   alt="Samson Ogbu"
                   fill
-                  sizes="132px"
+                  sizes="158px"
                   className="object-cover"
                 />
               </div>
@@ -350,7 +357,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col items-center gap-1.5 text-center">
             <p className="m-0 text-[12px] text-[#888]">
-              &copy; {year} Rose Creative Marketing and Fitch Technologies. All rights reserved.
+              &copy; {year} All rights reserved.
             </p>
             <a
               href="https://fitchtechnologies.com/"
