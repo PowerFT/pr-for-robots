@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { AuditRequest } from "@/components/audit-request";
 import { RegisterForm } from "@/components/register-form";
 import { SiteNav } from "@/components/site-nav";
 import { Wordmark } from "@/components/wordmark";
@@ -321,7 +322,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-3.5">
               <a
-                href="#register"
+                href="mailto:hello@rosecreative.marketing?subject=Consultation%20request%20-%20PR%20for%20Robots"
                 className="flex w-full items-center justify-center gap-3 rounded-card bg-brand-orange px-6 py-[18px] text-sm font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#ff7a2e]"
               >
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
@@ -330,16 +331,13 @@ export default function Home() {
                 </svg>
                 Book a Consultation
               </a>
-              <a
-                href="#register"
-                className="flex w-full items-center justify-center gap-3 rounded-card border border-brand-teal bg-transparent px-6 py-[17px] text-center text-sm font-bold uppercase tracking-[0.12em] text-brand-teal transition-colors hover:bg-brand-teal/10"
-              >
+              <AuditRequest className="flex w-full items-center justify-center gap-3 rounded-card border border-brand-teal bg-transparent px-6 py-[17px] text-center text-sm font-bold uppercase tracking-[0.12em] text-brand-teal transition-colors hover:bg-brand-teal/10">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
                   <circle cx="8" cy="8" r="5.5" stroke="#3DD9A9" strokeWidth="1.4" />
                   <path d="M12 12l4 4" stroke="#3DD9A9" strokeWidth="1.4" />
                 </svg>
                 Request an AI Visibility Audit
-              </a>
+              </AuditRequest>
             </div>
           </div>
         </section>
