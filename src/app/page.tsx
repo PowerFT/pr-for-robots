@@ -322,7 +322,9 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-3.5">
               <a
-                href="mailto:hello@rosecreative.marketing?subject=Consultation%20request%20-%20PR%20for%20Robots"
+                href="https://calendar.app.google/Cc9JdLotjKT1Kcpt9"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex w-full items-center justify-center gap-3 rounded-card bg-brand-orange px-6 py-[18px] text-sm font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#ff7a2e]"
               >
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="flex-none" aria-hidden>
