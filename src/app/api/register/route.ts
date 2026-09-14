@@ -1,6 +1,7 @@
-import { Resend } from "resend";
+import { formatGst, renderRows, sendNotification } from "@/lib/notify";
 
-import { NOTIFY, formatGst, renderRows, sendNotification } from "@/lib/notify";
+// Nodemailer needs Node's net/tls sockets.
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -11,7 +12,7 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { name, company, email, website, pageUrl } = (body ?? {}) as Record<string, unknown>;
+  const { name, company, email, website } = (body ?? {}) as Record<string, unknown>;
 
   // Honeypot: the `website` input is hidden from real users, so anything in it
   // is a bot. Answer 200 so the bot sees success and does not retry, but send
@@ -32,53 +33,32 @@ export async function POST(request: Request) {
     name: name.trim(),
     company: typeof company === "string" && company.trim() ? company.trim() : "—",
     email: email.trim(),
-    at: formatGst(new Date()),
-    page:
-      typeof pageUrl === "string" && pageUrl.trim()
-        ? pageUrl.trim()
-        : request.headers.get("referer") ?? "—",
   };
-
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error("[register] RESEND_API_KEY is not set; cannot send notification");
-    return Response.json(
-      { ok: false, error: "We could not complete your registration. Please try again." },
-      { status: 502 },
-    );
-  }
-
-  const resend = new Resend(apiKey);
 
   const { html, text } = renderRows([
     ["Name", registrant.name],
     ["Company", registrant.company],
     ["Email", registrant.email],
-    ["Submitted", `${registrant.at} (GST)`],
-    ["Page", registrant.page],
+    ["Submitted", `${formatGst(new Date())} (GST)`],
   ]);
 
   const sent = await sendNotification(
-    resend,
     {
-      to: NOTIFY,
       replyTo: registrant.email,
-      subject: `New webinar registration: ${registrant.name}`,
+      // Header values must stay on one line.
+      subject: `New webinar registration: ${registrant.name.replace(/[\r\n]+/g, " ")}`,
       html,
       text,
     },
     "register",
   );
 
-  if (sent.error) {
-    console.error("[register] Resend rejected the notification", sent.error);
+  if (!sent) {
     return Response.json(
       { ok: false, error: "We could not complete your registration. Please try again." },
       { status: 502 },
     );
   }
-
-  console.log("[register] notification sent", { id: sent.data?.id, email: registrant.email });
 
   // TODO(zoom): register the attendee with the Zoom webinar here, once the Zoom
   // credentials are available. The `registrant` fields above are what the Zoom

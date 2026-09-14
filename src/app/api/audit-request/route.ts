@@ -1,16 +1,11 @@
-import { Resend } from "resend";
-
 import { validateAuditRequest } from "@/lib/audit-request";
-import { NOTIFY, formatGst, renderRows, sendNotification } from "@/lib/notify";
+import { formatGst, renderRows, sendNotification } from "@/lib/notify";
+
+// Nodemailer needs Node's net/tls sockets.
+export const runtime = "nodejs";
 
 /** Four short fields fit in this many times over; anything bigger is refused. */
 const MAX_BODY_BYTES = 8 * 1024;
-
-const failed = () =>
-  Response.json(
-    { ok: false, error: "We couldn't send your request. Please try again." },
-    { status: 502 },
-  );
 
 export async function POST(request: Request) {
   const contentType = request.headers.get("content-type") ?? "";
@@ -63,45 +58,24 @@ export async function POST(request: Request) {
     ["Website", requester.website],
     ["Submitted", `${formatGst(new Date())} (GST)`],
   ]);
-  const message = {
-    to: NOTIFY,
-    replyTo: requester.email,
-    // Header values must stay on one line.
-    subject: `AI visibility audit request: ${requester.company.replace(/[\r\n]+/g, " ")}`,
-    html,
-    text,
-  };
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    // Local development without the key: log what would have been sent so the
-    // form can still be exercised end to end. In production this is an outage.
-    if (process.env.NODE_ENV !== "production") {
-      console.log("[audit-request] RESEND_API_KEY is not set — email NOT sent (dev stub)", {
-        to: message.to,
-        replyTo: message.replyTo,
-        subject: message.subject,
-        text: message.text,
-      });
-      return Response.json({ ok: true, stubbed: true }, { status: 200 });
-    }
-    console.error("[audit-request] RESEND_API_KEY is not set; cannot send audit request");
-    return failed();
+  const sent = await sendNotification(
+    {
+      replyTo: requester.email,
+      // Header values must stay on one line.
+      subject: `AI visibility audit request: ${requester.company.replace(/[\r\n]+/g, " ")}`,
+      html,
+      text,
+    },
+    "audit-request",
+  );
+
+  if (!sent) {
+    return Response.json(
+      { ok: false, error: "We couldn't send your request. Please try again." },
+      { status: 502 },
+    );
   }
 
-  let sent: Awaited<ReturnType<typeof sendNotification>>;
-  try {
-    sent = await sendNotification(new Resend(apiKey), message, "audit-request");
-  } catch (error) {
-    console.error("[audit-request] Resend request threw", error);
-    return failed();
-  }
-
-  if (sent.error) {
-    console.error("[audit-request] Resend rejected the audit request", sent.error);
-    return failed();
-  }
-
-  console.log("[audit-request] notification sent", { id: sent.data?.id, company: requester.company });
   return Response.json({ ok: true }, { status: 200 });
 }

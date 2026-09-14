@@ -1,23 +1,8 @@
-import type { Resend } from "resend";
+import nodemailer, { type Transporter } from "nodemailer";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 
 /** Both inboxes receive every registration and audit request. */
-export const NOTIFY = ["hello@rosecreative.marketing", "samson@fitchtechnologies.com"];
-
-/** Preferred sender. Requires rosecreative.marketing to be verified in Resend. */
-const FROM = "PR for Robots <noreply@rosecreative.marketing>";
-/** Resend's shared sending domain, available even before verification. */
-const FROM_FALLBACK = "PR for Robots <onboarding@resend.dev>";
-
-/**
- * Resend rejects a `from` on an unverified domain with one of these codes. The
- * message is checked too, since `validation_error` also covers unrelated
- * problems that should not silently downgrade the sender.
- */
-function isUnverifiedDomain(error: { name: string; message: string }) {
-  if (error.name === "invalid_from_address") return true;
-  if (error.name !== "validation_error") return false;
-  return /not verified|verify a domain|domain is not/i.test(error.message);
-}
+export const NOTIFY = ["samson@fitchtechnologies.com", "hello@rosecreative.marketing"];
 
 const escapeHtml = (value: string) =>
   value
@@ -50,7 +35,6 @@ export function renderRows(rows: Array<[string, string]>) {
 }
 
 type Notification = {
-  to: string[];
   replyTo: string;
   subject: string;
   html: string;
@@ -58,18 +42,68 @@ type Notification = {
 };
 
 /**
- * Sends from the rosecreative.marketing address, falling back to Resend's
- * shared domain — with a logged warning — if that domain isn't verified.
+ * Created on the first send and reused while the function instance stays
+ * warm. Deliberately not pooled: a serverless instance can be frozen between
+ * requests, which would leave a pooled socket dead.
  */
-export async function sendNotification(resend: Resend, message: Notification, tag: string) {
-  let sent = await resend.emails.send({ ...message, from: FROM });
+let transporter: Transporter<SMTPTransport.SentMessageInfo> | undefined;
 
-  if (sent.error && isUnverifiedDomain(sent.error)) {
-    console.warn(
-      `[${tag}] ${FROM} rejected (${sent.error.name}: ${sent.error.message}); falling back to ${FROM_FALLBACK}. Verify rosecreative.marketing in Resend.`,
-    );
-    sent = await resend.emails.send({ ...message, from: FROM_FALLBACK });
+function getTransporter(user: string, pass: string) {
+  transporter ??= nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: { user, pass },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+  });
+  return transporter;
+}
+
+/**
+ * Sends the notification to both inboxes through Gmail SMTP, from the Gmail
+ * account itself. Returns true once Gmail accepts at least one recipient;
+ * accepted/rejected/messageId are logged either way.
+ */
+export async function sendNotification(message: Notification, tag: string) {
+  const user = process.env.GMAIL_USER;
+  // Google displays app passwords in groups of four; the spaces aren't part of it.
+  const pass = process.env.GMAIL_APP_PASSWORD?.replace(/\s+/g, "");
+  if (!user || !pass) {
+    console.error(`[${tag}] GMAIL_USER or GMAIL_APP_PASSWORD is not set; cannot send notification`);
+    return false;
   }
 
-  return sent;
+  let info: SMTPTransport.SentMessageInfo;
+  try {
+    info = await getTransporter(user, pass).sendMail({
+      ...message,
+      from: { name: "PR for Robots", address: user },
+      to: NOTIFY,
+    });
+  } catch (error) {
+    // Only the SMTP diagnostics — never the whole error object, which can carry
+    // connection details.
+    const { code, command, responseCode, response, message: reason } = (error ?? {}) as Record<
+      string,
+      unknown
+    >;
+    console.error(`[${tag}] Gmail SMTP send failed`, { code, command, responseCode, response, reason });
+    return false;
+  }
+
+  const result = {
+    messageId: info.messageId,
+    accepted: info.accepted,
+    rejected: info.rejected,
+    response: info.response,
+  };
+  if (info.accepted.length === 0) {
+    console.error(`[${tag}] Gmail accepted no recipients`, result);
+    return false;
+  }
+  if (info.rejected.length > 0) console.error(`[${tag}] Gmail rejected some recipients`, result);
+  else console.log(`[${tag}] notification sent`, result);
+  return true;
 }

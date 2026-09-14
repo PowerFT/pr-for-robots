@@ -23,7 +23,6 @@ export function RegisterForm() {
       company: String(form.get("company") ?? ""),
       email: String(form.get("email") ?? ""),
       website: String(form.get("website") ?? ""),
-      pageUrl: window.location.href,
     };
 
     try {
