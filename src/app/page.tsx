@@ -256,7 +256,15 @@ export default function Home() {
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-2.5">
                 <div className="text-[21px] font-bold tracking-[-0.01em] text-brand-orange">
-                  John Rose
+                  <a
+                    href="https://www.linkedin.com/in/mrjohnmrose/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="John Rose on LinkedIn"
+                    className="underline-offset-4 hover:underline"
+                  >
+                    John Rose
+                  </a>
                 </div>
                 <p className="m-0 text-[15px] leading-[1.7] text-body text-pretty">
                   John Rose, Chairman of{" "}
@@ -287,7 +295,15 @@ export default function Home() {
               </div>
               <div className="flex min-w-0 flex-1 flex-col gap-2.5">
                 <div className="text-[21px] font-bold tracking-[-0.01em] text-brand-orange">
-                  Samson Ogbu
+                  <a
+                    href="https://www.linkedin.com/in/samson-ogbu-mba-pmp-375b0518/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Samson Ogbu on LinkedIn"
+                    className="underline-offset-4 hover:underline"
+                  >
+                    Samson Ogbu
+                  </a>
                 </div>
                 <p className="m-0 text-[15px] leading-[1.7] text-body text-pretty">
                   Samson Ogbu, Chief Technology Officer of{" "}
