@@ -51,7 +51,7 @@ export function RegisterForm() {
         className="border border-hairline rounded-card bg-bg px-3.5 py-[26px] text-center text-[15px] leading-relaxed text-brand-teal"
         role="status"
       >
-        Thanks — you&rsquo;re registered. We&rsquo;ll be in touch with your webinar details.
+        You&rsquo;re registered. Check your inbox for your personal Zoom link.
       </div>
     );
   }

@@ -1,7 +1,10 @@
 import { formatGst, renderRows, sendNotification } from "@/lib/notify";
+import { addRegistrant } from "@/lib/zoom";
 
 // Nodemailer needs Node's net/tls sockets.
 export const runtime = "nodejs";
+// Zoom token + registration + Gmail send, each with its own timeout.
+export const maxDuration = 20;
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -35,13 +38,38 @@ export async function POST(request: Request) {
     email: email.trim(),
   };
 
+  // Zoom requires a last name; a one-word name fills both.
+  const [firstName, ...rest] = registrant.name.split(/\s+/);
+  const lastName = rest.join(" ") || firstName;
+
+  const zoom = await addRegistrant({
+    email: registrant.email,
+    firstName,
+    lastName,
+    company: registrant.company === "—" ? undefined : registrant.company,
+  });
+
+  // 409 means this email is already on the webinar, which is fine by us.
+  const alreadyRegistered = !zoom.ok && zoom.status === 409;
+  let zoomLine: string;
+  if (zoom.ok) {
+    zoomLine = `registered (registrant ID ${zoom.registrantId})`;
+  } else if (alreadyRegistered) {
+    zoomLine = "already registered";
+  } else {
+    zoomLine = `FAILED ${zoom.status}`;
+    console.error("[register] Zoom registration failed", { status: zoom.status, body: zoom.body });
+  }
+
   const { html, text } = renderRows([
     ["Name", registrant.name],
     ["Company", registrant.company],
     ["Email", registrant.email],
+    ["Zoom", zoomLine],
     ["Submitted", `${formatGst(new Date())} (GST)`],
   ]);
 
+  // Sent whatever Zoom said, so a failed registration still reaches a human.
   const sent = await sendNotification(
     {
       replyTo: registrant.email,
@@ -53,18 +81,13 @@ export async function POST(request: Request) {
     "register",
   );
 
-  if (!sent) {
+  // Neither the join URL nor Zoom's error text ever goes back to the visitor.
+  if (!(zoom.ok || alreadyRegistered) || !sent) {
     return Response.json(
       { ok: false, error: "We could not complete your registration. Please try again." },
       { status: 502 },
     );
   }
-
-  // TODO(zoom): register the attendee with the Zoom webinar here, once the Zoom
-  // credentials are available. The `registrant` fields above are what the Zoom
-  // `POST /webinars/{webinarId}/registrants` call needs. A failure there must
-  // not fail this request — the notification email has already gone out — so
-  // log the error and still return 200.
 
   return Response.json({ ok: true }, { status: 200 });
 }
