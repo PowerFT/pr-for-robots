@@ -115,7 +115,7 @@ export default function Home() {
                   <path d="M1.5 7.5h15M5.5 1.5v3M12.5 1.5v3" stroke="#F2681C" strokeWidth="1.4" />
                 </svg>
                 <span className="font-mono text-[13.5px] tracking-[0.04em] text-white">
-                  September 30, 2026
+                  October 7, 2026
                 </span>
                 <span className="text-brand-orange">|</span>
                 <span className="font-mono text-[13.5px] tracking-[0.04em] text-brand-orange">
