@@ -15,7 +15,7 @@ export const videos: Webinar[] = [
     description:
       "Discover why earned media, authority and reputation have become powerful signals for both traditional search engines and AI-driven search.",
     thumbnail: "/images/webinar-1.jpg",
-    url: "https://youtu.be/LHponP5UF88",
+    url: "https://youtu.be/TwYef8cyfrk",
   },
   {
     id: "travel-disrupted",
@@ -23,7 +23,7 @@ export const videos: Webinar[] = [
     description:
       "Learn how travel and tourism brands can protect their visibility and reputation when AI is increasingly influencing traveler decisions during periods of disruption.",
     thumbnail: "/images/webinar-2.jpg",
-    url: "https://youtu.be/sEF9Iyz8Ls0",
+    url: "https://youtu.be/KZP80f1_h7k",
   },
   {
     id: "real-estate",
@@ -31,6 +31,6 @@ export const videos: Webinar[] = [
     description:
       "Explore how publicity and third-party credibility help real estate brands become more discoverable and trustworthy when buyers turn to AI for advice.",
     thumbnail: "/images/webinar-3.jpg",
-    url: "https://youtu.be/ztrg1LG6B5o",
+    url: "https://youtu.be/mDy9KJSm1do",
   },
 ];
